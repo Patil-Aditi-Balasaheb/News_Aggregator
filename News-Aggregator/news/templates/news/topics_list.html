@@ -1,0 +1,84 @@
+{% extends "news/base.html" %}
+{% load static %}
+{% block content %}
+
+<style>
+	.card-deck {
+		padding: 0px;
+		margin-top: 20px;
+		margin-bottom:30px;
+		
+	}
+	.card {
+		margin: 20px;
+	}
+	.card-img-top {
+		height: 200px;
+	}
+</style>
+
+	{% if user %}
+	<h1  style="text-align: center;">{{user.first_name}} Your Daily News Feed</h1>
+	{% endif %}
+	{% if profile %}
+	<div class="card-deck">
+		{% if 'top' in profile.interest %}
+		<div class="col-lg-4 col-md-4 col-sm-4 col-xs-12 d-flex">
+		<div class="card">
+		  <img class="card-img-top" src="{% static 'news/images/tech.jpg' %}" alt="Top">
+		  <a href="" class="btn btn-primary">Top News</a>
+		</div>
+		</div>
+		{% endif %}
+		{% if 'tech' in profile.interest %}
+		<div class="col-lg-4 col-md-4 col-sm-4 col-xs-12 d-flex">
+		<div class="card">
+		  <img class="card-img-top" src="{% static 'news/images/tech.jpg' %}" alt="Tech">
+		  <a href="{% url 'scrape' %}" class="btn btn-primary">Tech News</a>
+		</div>
+		</div>
+		{% endif %}
+		{% if 'economy' in profile.interest %}
+		<div class="col-lg-4 col-md-4 col-sm-4 col-xs-12 d-flex">
+		<div class="card">
+		  <img class="card-img-top" src="{% static 'news/images/economy.jpg' %}" alt="Economy">
+		  <a href="{% url 'scrape1' %}" class="btn btn-primary">Economy News</a>
+		</div>
+		</div>
+		{% endif %}
+		{% if 'sports' in profile.interest %}
+		<div class="col-lg-4 col-md-4 col-sm-4 col-xs-12 d-flex">
+		<div class="card">
+		  <img class="card-img-top" src="{% static 'news/images/sports.jpg' %}" alt="Sports">
+		  <a href="{% url 'scrape2' %}" class="btn btn-primary">Sports News</a>
+		</div>
+		</div>
+		{% endif %}
+		{% if 'politics' in profile.interest %}
+		<div class="col-lg-4 col-md-4 col-sm-4 col-xs-12 d-flex">
+		<div class="card">
+		  <img class="card-img-top" src="{% static 'news/images/politics.jpg' %}" alt="Politics">
+		  <a href="{% url 'scrape3' %}" class="btn btn-primary">Politics News</a>
+		</div>
+		</div>
+		{% endif %}
+		{% if 'lifenhealth' in profile.interest %}
+		<div class="col-lg-4 col-md-4 col-sm-4 col-xs-12 d-flex">
+		<div class="card">
+		  <img class="card-img-top" src="{% static 'news/images/lifestyle.jpg' %}" alt="Lifestyle & Health">
+		  <a href="{% url 'scrape4' %}" class="btn btn-primary">Lifestyle & Health News</a>
+		</div>
+		</div>
+		{% endif %}
+		{% if 'top' in profile.interest %}
+		<div class="col-lg-4 col-md-4 col-sm-4 col-xs-12 d-flex">
+		<div class="card">
+		  <img class="card-img-top" src="{% static 'news/images/entertainment.png' %}" alt="Entertainment">
+		  <a href="{% url 'scrape5' %}" class="btn btn-primary">Entertainment News</a>
+		</div>
+		</div>
+		{% endif %}
+	</div>
+	{% endif %}
+
+{% endblock content %}
