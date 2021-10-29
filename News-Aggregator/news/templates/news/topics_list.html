@@ -25,8 +25,8 @@
 		{% if 'top' in profile.interest %}
 		<div class="col-lg-4 col-md-4 col-sm-4 col-xs-12 d-flex">
 		<div class="card">
-		  <img class="card-img-top" src="{% static 'news/images/tech.jpg' %}" alt="Top">
-		  <a href="" class="btn btn-primary">Top News</a>
+		  <img class="card-img-top" src="{% static 'news/images/top.jpg' %}" alt="Top">
+		  <a href="{% url 'scrape6' %}" class="btn btn-primary">Top News</a>
 		</div>
 		</div>
 		{% endif %}
