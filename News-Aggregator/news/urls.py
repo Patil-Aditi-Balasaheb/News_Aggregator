@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import NewsListView,SportsListView,EconomyListView,PoliticsListView,LifestyleListView,EntertainmentListView
+from .views import NewsListView,SportsListView,EconomyListView,PoliticsListView,LifestyleListView,EntertainmentListView, TopList, TopNewsListView
 from . import views
 
 
@@ -10,6 +10,8 @@ urlpatterns = [
 	path('scrape3/', views.scrape3, name="scrape3"),
 	path('scrape4/', views.scrape4, name="scrape4"),
 	path('scrape5/', views.scrape5, name="scrape5"),
+	path('scrape6/', views.scrape6, name="scrape6"),
+	path('gettopnews/', TopNewsListView.as_view(), name='top_home'),
 	path('getnews/', NewsListView.as_view(), name='home'),
 	path('geteconomynews/', EconomyListView.as_view(), name='economy_home'),
 	path('getsportsnews/', SportsListView.as_view(), name='sports_home'),
@@ -17,5 +19,5 @@ urlpatterns = [
 	path('getlifestylenews/', LifestyleListView.as_view(), name='lifestyle_home'),
 	path('getentertainmentnews/', EntertainmentListView.as_view(), name='entertainment_home'),
 	path('menu/', views.menu_list, name='menu'),
-	path('', views.home1, name="starter"),
+	path('', TopList.as_view(), name="starter"),
 ]

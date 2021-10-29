@@ -1,10 +1,12 @@
+from django.contrib.auth import models
 from django.contrib.auth.models import User
 import requests
 import time
 from django.shortcuts import render, redirect
 from django.views.decorators.http import require_POST, require_http_methods
 from django.views.decorators.csrf import csrf_exempt
-from news.models import Headline,EHeadline,SHeadline,PHeadline,LHeadline,ENHeadline
+from scrapy import settings
+from news.models import Headline,EHeadline,SHeadline,PHeadline,LHeadline,ENHeadline, TopHeadline
 from users.models import Profile
 from django.contrib.auth.decorators import login_required
 from django.views.generic import ListView
@@ -15,6 +17,7 @@ import os
 import sys
 
 path = django_settings.BASE_DIR
+sys.path.append(path + "/topcrawler")
 sys.path.append(path + "/newscrawler")
 sys.path.append(path + "/economycrawler")
 sys.path.append(path + "/sportscrawler")
@@ -29,6 +32,7 @@ sys.path.append(path + "/entertainmentcrawler")
 # sys.path.append("C:/Users/admin/Desktop/DJANGO/Practice_Django/News_Aggregator/lifestylecrawler")
 # sys.path.append("C:/Users/admin/Desktop/DJANGO/Practice_Django/News_Aggregator/entertainmentcrawler")
 
+from topcrawler.spiders import top_spider
 from newscrawler.spiders import news_spider
 from economycrawler.spiders import economy_spider
 from sportscrawler.spiders import sports_spider
@@ -41,6 +45,7 @@ from twisted.internet import reactor
 from scrapy.crawler import Crawler,CrawlerRunner
 from scrapy.settings import Settings
 from scrapy.utils.project import get_project_settings
+from topcrawler import settings as top_settings
 from newscrawler import settings as my_settings
 from economycrawler import settings as economy_settings
 from sportscrawler import settings as sports_settings
@@ -57,6 +62,10 @@ from crochet import setup
 def home1(request):
     return render(request, "news/starter.html")
 
+class TopList(ListView):
+    model = TopHeadline
+    template_name = 'news/starter.html'
+
 '''
 @login_required
 def news_list(request):
@@ -66,6 +75,11 @@ def news_list(request):
     }
     return render(request, "news/home.html", context)
 '''
+# Top
+class TopNewsListView(ListView):
+    model = TopHeadline
+    template_name = 'news/top_home.html'
+    paginate_by = 9
 
 # Technology
 class NewsListView(ListView):
@@ -232,3 +246,18 @@ def scrape5(request):
     d=runner.crawl(entertainment_spider.EntrtnmentSpider)
     time.sleep(3)
     return redirect("../getentertainmentnews/")
+
+
+@csrf_exempt
+@require_http_methods(['POST', 'GET'])
+def scrape6(request):
+    TopHeadline.objects.all().delete()
+    crawler_settings = Settings()
+
+    setup()
+    configure_logging()
+    crawler_settings.setmodule(top_settings)
+    runner = CrawlerRunner(settings=crawler_settings)
+    d = runner.crawl(top_spider.TopSpider)
+    time.sleep(3)
+    return redirect("../gettopnews/")
